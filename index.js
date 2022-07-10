@@ -1,7 +1,5 @@
 "use strict";
-
 import { symbols } from "./symbols.js";
-
 
 //global variables
 const data = symbols;
@@ -20,21 +18,10 @@ amountInput.addEventListener('keyup', function(evt){
     amountInput.value = n.toLocaleString();
 }, false);
 
-// for (let key in data) {
-//     if(data.hasOwnProperty(key)){
-//         // console.log(`${key} : ${data[key].name}`);
-//         let option = document.createElement('option');
-//         option.setAttribute('value', key);
-//         option.appendChild(document.createTextNode(`${key} : ${data[key].name}`));
-//         convertFrom.appendChild(option);
-//         convertTo.appendChild(option.cloneNode(true));
-//     }
-// }
-
 document.addEventListener('DOMContentLoaded', () => {
 
+    //function to create dropdown currency items
     function currencySelectItems() {
-
         for (let key in data) {
             if(data.hasOwnProperty(key)){
                 // console.log(`${key} : ${data[key].name}`);
@@ -46,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    //swap dropdown values on click 'switch' icon
+    switchConversion.addEventListener('click', function() {
+        let temp = convertFrom.value;
+        convertFrom.value = convertTo.value;
+        convertTo.value =  temp;
+    });
 
     currencySelectItems();
 });
