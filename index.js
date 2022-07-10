@@ -2,16 +2,17 @@
 
 import { symbols } from "./symbols.js";
 
+
 //global variables
-var amountInput = document.getElementById('amount');
+const data = symbols;
+let amountInput = document.getElementById('amount');
 const convertFrom = document.querySelector('.currency-from');
 const convertTo = document.querySelector('.currency-to');
 const switchConversion = document.getElementById('switch');
 const convertedAmount = document.querySelector('.result');
 const convertButton = document.querySelector('.convert');
 
-//initiate currency symbols data
-const data = symbols;
+
 
 //function to format inputted amount
 amountInput.addEventListener('keyup', function(evt){
@@ -19,18 +20,34 @@ amountInput.addEventListener('keyup', function(evt){
     amountInput.value = n.toLocaleString();
 }, false);
 
+// for (let key in data) {
+//     if(data.hasOwnProperty(key)){
+//         // console.log(`${key} : ${data[key].name}`);
+//         let option = document.createElement('option');
+//         option.setAttribute('value', key);
+//         option.appendChild(document.createTextNode(`${key} : ${data[key].name}`));
+//         convertFrom.appendChild(option);
+//         convertTo.appendChild(option.cloneNode(true));
+//     }
+// }
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    for (let key in data) {
-        if(data.hasOwnProperty(key)){
-            // console.log(`${key} : ${data[key].name}`);
-            let option = document.createElement('option');
-            option.setAttribute('value', key);
-            option.appendChild(document.createTextNode(`${key} : ${data[key].name}`));
-            convertFrom.appendChild(option);
+    function currencySelectItems() {
+
+        for (let key in data) {
+            if(data.hasOwnProperty(key)){
+                // console.log(`${key} : ${data[key].name}`);
+                let option = document.createElement('option');
+                option.setAttribute('value', key);
+                option.appendChild(document.createTextNode(`${key} : ${data[key].name}`));
+                convertFrom.appendChild(option);
+                convertTo.appendChild(option.cloneNode(true));
+            }
         }
     }
 
+    currencySelectItems();
 });
 
 // let myHeaders = new Headers();
