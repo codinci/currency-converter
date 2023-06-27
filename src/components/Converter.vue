@@ -1,27 +1,80 @@
 <template>
-	<v-row justify="center" align="center" >
-		<v-card width="650px" >
-			<v-row class="ma-2 pa-2">
-				<v-col>
-					<v-select
-						label="Select"
-						:items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-						>
-					</v-select>
-				</v-col>
-				<v-col>
-					<v-select
-						label="Select"
-						:items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-						>
-					</v-select>
-				</v-col>
+		<v-card :width="width" class="d-sm-flex align-center ma-auto ">
+			<v-container>
+				<v-row>
+					<v-col>
+						<v-select
+							variant="outlined"
+							class="rounded"
+							label="KSH"
+							:items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+							>
+						</v-select>
+						<v-text-field label="amount"></v-text-field>
+						<v-row class="justify-space-around mt-n2 mb-2">
+							<p>BTC</p>
+							<p>BTC</p>
+							<p>BTC</p>
+							<p>BTC</p>
+						</v-row>
+					</v-col>
+				</v-row>
+			</v-container>
+			<v-row class="justify-center ma-2 pa-2">
+				<v-icon color="green" icon="mdi-swap-horizontal"></v-icon>
 			</v-row>
-			<v-row class="ma-2 pa-2">
-				<v-text-field label="amount" class="ma-2 pa-2"></v-text-field>
-				<v-icon class="mt-8 pa-2 mx-2" icon="mdi-swap-horizontal"></v-icon>
- 				<v-text-field label="amount" class="ma-2 pa-2"></v-text-field>
-			</v-row>
+			<v-container class="">
+				<v-row>
+					<v-col>
+						<v-select
+							variant="outlined"
+							class="rounded"
+							label="KSH"
+							:items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+						>
+						</v-select>
+						<v-text-field label="amount"></v-text-field>
+						<v-row class="justify-space-around mt-n2 mb-2">
+							<p>BTC</p>
+							<p>BTC</p>
+							<p>BTC</p>
+							<p>BTC</p>
+						</v-row>
+					</v-col>
+				</v-row>
+			</v-container>
 		</v-card>
-	</v-row>
 </template>
+
+
+
+<script>
+import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
+
+export default {
+	setup () {
+		const { name } = useDisplay()
+
+		const width = computed(() => {
+		// name is reactive and
+		// must use .value
+		switch (name.value) {
+			case 'xs': return '100%'
+			case 'sm': return '100%'
+			case 'md': return '60%'
+			case 'lg': return '60%'
+			case 'xl': return '50%'
+			case 'xxl': return '50%'
+		}
+
+		return undefined
+		})
+
+		return { width }
+	},
+}
+</script>
+
+
+

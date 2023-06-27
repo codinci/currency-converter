@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "puppeteer": "^20.7.3",
+    "vee-validate": "^4.10.1",
     "vue": "^3.3.4",
     "vuetify": "^3.3.5"
   },
