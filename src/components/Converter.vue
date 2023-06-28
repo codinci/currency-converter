@@ -23,7 +23,7 @@
 			<v-row class="justify-center ma-2 pa-2">
 				<v-icon color="green" icon="mdi-swap-horizontal"></v-icon>
 			</v-row>
-			<v-container class="">
+			<v-container>
 				<v-row>
 					<v-col>
 						<v-select
