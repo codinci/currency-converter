@@ -1,0 +1,54 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"firstName": "test",
+			"lastName": "user",
+			"phoneNo": "742672432",
+			"userEmail": "test@mail.com",
+			"userPassword": "#One1234",
+			"accBalance": "100"
+		},
+		{
+			"id": 2,
+			"firstName": "another",
+			"lastName": "user",
+			"phoneNo": "742789054",
+			"userEmail": "currency@mail.com",
+			"userPassword": "#Two1234",
+			"accBalance": "50"
+		}
+	],
+	"transactions": [
+		{
+			"transactionID": "RAE001",
+			"status": "completed",
+			"description": "Test User",
+			"date": "2023-02-12",
+			"amount": "200",
+			"currency": "USD",
+			"type": "received"
+		},
+		{
+			"transactionID": "RAE002",
+			"status": "completed",
+			"description": "Another User",
+			"date": "2023-03-27",
+			"amount": "10",
+			"currency": "EUR",
+			"type": "sent"
+		}
+	],
+	"country": [
+		{
+			"countryID": 1,
+			"countryCode": "+254",
+			"country": "Kenya"
+		},
+		{
+			"countryID": 2,
+			"countryCode": "+81",
+			"country": "Japan"
+		}
+	]
+}
