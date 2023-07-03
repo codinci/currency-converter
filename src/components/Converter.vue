@@ -48,32 +48,28 @@
 
 
 
-<script>
-import { computed } from 'vue'
+<script setup>
+import { onMounted, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 
-export default {
-	setup () {
-		const { name } = useDisplay()
 
-		const width = computed(() => {
-		// name is reactive and
-		// must use .value
-		switch (name.value) {
-			case 'xs': return '100%'
-			case 'sm': return '100%'
-			case 'md': return '60%'
-			case 'lg': return '60%'
-			case 'xl': return '50%'
-			case 'xxl': return '50%'
-		}
+const { name } = useDisplay()
 
-		return undefined
-		})
+const width = computed(() => {
+	// name is reactive and
+	// must use .value
+	switch (name.value) {
+		case 'xs': return '100%'
+		case 'sm': return '100%'
+		case 'md': return '60%'
+		case 'lg': return '60%'
+		case 'xl': return '50%'
+		case 'xxl': return '50%'
+	}
 
-		return { width }
-	},
-}
+	return undefined
+})
+onMounted(() => width)
 </script>
 
 
