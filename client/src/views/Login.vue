@@ -1,5 +1,6 @@
 <template>
   <v-container class="d-flex ma-auto">
+  <Notification ref="displayNotification"/>
 	<v-card class="w-100 mx-auto">
 	  <v-form @submit.prevent class="ma-auto w-75 my-8">
 		<v-text-field
@@ -21,47 +22,44 @@
   </v-container>
 </template>
 <script setup>
-import axios from 'axios';
+import { userLogin } from '../api/authApi'
+import { ref } from 'vue';
 import { useField, useForm } from 'vee-validate'
+import Notification from '../components/Notification.vue'
 
-  const { handleSubmit } = useForm({
-    validationSchema: {
-      password (value) {
-        if ( /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)) return true
+const displayNotification = ref(null)
 
-        return 'Password must contain alphanumeric characters greater than 8.'
-      },
-      email (value) {
-        if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+const { handleSubmit, resetForm } = useForm({
+  validationSchema: {
+    password (value) {
+      if ( /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)) return true
 
-        return 'Must be a valid e-mail.'
-      }
+      return 'Password must contain alphanumeric characters greater than 8.'
     },
-  })
-  const password = useField('password')
-  const email = useField('email')
+    email (value) {
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
 
-
-const submit =  handleSubmit(values => {
-  // console.log(JSON.stringify(values.password))
-  const collectUsers = async () => {
-    const response = await axios.get('db.json')
-    // console.log(response.data);
-    const users = response.data.users;
-    const findEmail = users.find(({userEmail}) => userEmail === email.value.value);
-    if (!findEmail) {
-      console.log('No user with such email exists');
-    } else {
-      if (findEmail.userPassword !== password.value.value) {
-        console.log('Incorrect password');
-      } else {
-        console.log('Redirect user to home page');
-      }
+      return 'Must be a valid e-mail.'
     }
+  },
+})
+const password = useField('password')
+const email = useField('email')
+
+
+const submit = handleSubmit(async values => {
+  const response = await userLogin({
+    email: values.email,
+    password: values.password
+  })
+  if (response.status === 200) {
+      // Show success message
+    displayNotification.value.showSnackbar('Login Successful', 'success');
+  } else {
+      // Show error message
+    displayNotification.value.showSnackbar(response.data.message, 'error')
   }
-
-  collectUsers()
-
+  resetForm()
 })
 
 </script>

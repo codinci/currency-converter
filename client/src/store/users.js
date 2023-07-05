@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
     user.value = newUser;
   }
 
-  function setToken(newToken) {
+  function setUserToken(newToken) {
     token.value = newToken;
   }
 
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', () => {
     token,
     isAuthenticated,
     setUser,
-    setToken,
+    setUserToken,
     logout,
   };
 });

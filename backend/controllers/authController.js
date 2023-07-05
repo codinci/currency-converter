@@ -6,7 +6,7 @@ const validator = require('../config/authValidation.js')
 
 const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
-	console.log(email + 'and' + password);
+	console.log(email + ' and ' + password);
 
 	// validate request using joi library
 	const validationResult = validator.schema.validate(req.body)
@@ -17,7 +17,7 @@ const handleLogin = async (req, res) => {
 		//ensure user exists
 		const foundUser = await User.findOne({ email: email }).exec();
 		if (!foundUser)
-		{ return res.status(401).json({ message: "User does not exist" }) }
+		{ return res.status(401).json({ message: "Email does not exist" }) }
 		else {
 			//compare password in the db to one in the request
 			const matchPwd = await bcrypt.compare(password, foundUser.password);
@@ -46,7 +46,7 @@ const handleLogin = async (req, res) => {
 				res.cookie("jwt", refreshToken, {
 					httpOnly: true,
 					sameSite: "None",
-					secure: false,
+					secure: true,
 					maxAge: 24 * 60 * 60 * 1000,
 				});// set secure to true in production
 
