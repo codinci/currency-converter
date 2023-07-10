@@ -1,63 +1,49 @@
 import axios from "axios";
+import { useAuthStore } from '../store/users';
+import { axiosPrivate } from "./authApiInterceptor";
 
-const BASE_URL = 'http://localhost:3500';
+const axiosApi = axios.create({
+	baseURL: import.meta.env.VITE_APP_BASE_URL,
+	headers: { 'Content-Type': 'application/json' },
+	withCredentials: true,
+})
 
-export const axiosPrivate = axios.create({
-  baseURL: BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: false
-});
 
-const refreshToken = async () => {
-  const response = await axiosPrivate.get('/refresh');
-  console.log(response.data);
-  setUserToken(response.data.accessToken);
-  return response.data.accessToken;
-};
-
-export const userLogin = async (userDetails) => {
+export const login = async (credentials) => {
+	const authStore = useAuthStore()
 	try {
-		const response = await axiosPrivate.post('/login', userDetails);
+		const response = await axiosApi.post('/login',credentials)
+		authStore.setUserToken(response.data.accessToken)
+		authStore.setUser(response.data.user)
 		return response;
 	} catch (error) {
-		// console.error(error)
-		return error.response
+		console.error(error.message);
+		return error.response;
 	}
-};
+}
 
-export const setupInterceptors = () => {
-  let requestInterceptor;
-  let responseInterceptor;
+export const register = async (credentials) => {
 
-  // Request interceptor
-  requestInterceptor = axiosPrivate.interceptors.request.use(
-    (config) => {
-      if (!config.headers['Authorization']) {
-        config.headers['Authorization'] = `Bearer ${token.value}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+	try {
+		const { data } = await axiosApi.post('/register', credentials)
+		console.log(data);
+		return data
+	} catch (error) {
+		console.error(error.message);
+		throw error.message;
+	}
+}
 
-  // Response interceptor
-  responseInterceptor = axiosPrivate.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const prevRequest = error?.config;
-      if (error?.response?.status === 403 && !prevRequest?.sent) {
-        prevRequest.sent = true;
-        const newAccessToken = await refreshToken();
-        prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        return axiosPrivate(prevRequest);
-      }
-      return Promise.reject(error);
-    }
-  );
+export const logout = async () => {
+	const authStore = useAuthStore()
 
-  // Return cleanup function
-  return () => {
-    axiosPrivate.interceptors.request.eject(requestInterceptor);
-    axiosPrivate.interceptors.response.eject(responseInterceptor);
-  };
-};
+	try {
+		const { data } = await axiosPrivate.post('/logout')
+		authStore.logout()
+		console.log(data);
+		return data
+	} catch (error) {
+		console.error(error.message);
+		throw error.message
+	}
+}

@@ -20,13 +20,14 @@ const handleLogin = async (req, res) => {
 		{ return res.status(401).json({ message: "Email does not exist" }) }
 		else {
 			//compare password in the db to one in the request
+			const user = `${foundUser.firstName} ${foundUser.lastName}`
 			const matchPwd = await bcrypt.compare(password, foundUser.password);
-			console.log(matchPwd)
 			if (matchPwd) {
 				const accessToken = jwt.sign(
 					{
 						UserInfo: {
-							username: `${foundUser.firstName} ${foundUser.lastName}`,
+							username: user,
+							amount: foundUser.accountBalance,
 						},
 					},
 					process.env.ACCESS_TOKEN_SECRET,
@@ -34,7 +35,10 @@ const handleLogin = async (req, res) => {
 				);
 
 				const refreshToken = jwt.sign(
-					{ username: `${foundUser.firstName} ${foundUser.lastName}` },
+					{
+						username: user,
+						amount: foundUser.accountBalance,
+					},
 					process.env.REFRESH_TOKEN_SECRET,
 					{ expiresIn: "15s" }
 				);
@@ -50,7 +54,7 @@ const handleLogin = async (req, res) => {
 					maxAge: 24 * 60 * 60 * 1000,
 				});// set secure to true in production
 
-				res.json({ accessToken });
+				res.json({user, accessToken})
 			} else {
 				res.status(401).json({ message: "Incorrect password" });
 			}

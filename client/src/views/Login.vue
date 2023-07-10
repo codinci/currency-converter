@@ -22,8 +22,9 @@
   </v-container>
 </template>
 <script setup>
-import { userLogin } from '../api/authApi'
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import {login} from '../api/authApi'
 import { useField, useForm } from 'vee-validate'
 import Notification from '../components/Notification.vue'
 
@@ -46,17 +47,21 @@ const { handleSubmit, resetForm } = useForm({
 const password = useField('password')
 const email = useField('email')
 
+const router = useRouter()
 
 const submit = handleSubmit(async values => {
-  const response = await userLogin({
-    email: values.email,
-    password: values.password
-  })
+  const response = await login(
+    {
+      email: values.email,
+      password: values.password
+    }
+  )
   if (response.status === 200) {
-      // Show success message
+    // Show success message
     displayNotification.value.showSnackbar('Login Successful', 'success');
+    router.push({ name: 'profile' });
   } else {
-      // Show error message
+    // Show error message
     displayNotification.value.showSnackbar(response.data.message, 'error')
   }
   resetForm()
