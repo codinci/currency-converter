@@ -2,9 +2,8 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const logger = require("morgan");
-const errorHandler = require("./middleware/errorHandler");
 const cors = require("cors");
-const corsOptions = require("./config/corsOptions");
+const corsOptions = require("./config/CorsConfig/corsOptions");
 const verifyJWT = require("./middleware/verifyJWT");
 const cookieParser = require("cookie-parser");
 const credentials = require("./middleware/credentials");
@@ -33,15 +32,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 // route handlers
-app.use("/register", require("./routes/register"));
-app.use("/login", require("./routes/auth"));
-app.use("/refresh", require("./routes/refresh"));
-app.use("/logout", require("./routes/logout"));
+app.use("/register", require("./routes/AuthRoutes/register"));
+app.use("/login", require("./routes/AuthRoutes/login"));
+app.use("/refresh", require("./routes/AuthRoutes/refresh"));
+app.use("/logout", require("./routes/AuthRoutes/logout"));
 
 app.use(verifyJWT);
 
 
-app.use(errorHandler);
 
 mongoose.connection.once('open', () => {
 	console.log('Connected to MongoDB');

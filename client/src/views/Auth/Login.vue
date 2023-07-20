@@ -24,9 +24,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {login} from '../api/authApi'
+import {login} from '../../api/authApi'
 import { useField, useForm } from 'vee-validate'
-import Notification from '../components/Notification.vue'
+import Notification from '../../components/Notification.vue'
 
 const displayNotification = ref(null)
 

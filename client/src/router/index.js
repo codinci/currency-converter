@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue';
-import Login from '../views/Login.vue';
-import Signup from '../views/Signup.vue';
+import Login from '../views/Auth/Login.vue';
+import Signup from '../views/Auth/Signup.vue';
 
 const router = createRouter({
 	history: createWebHistory(),

@@ -1,11 +1,11 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const dataValidation = require('../config/registrationValidation')
+const User = require("../../models/User.js");
+const bcrypt = require("bcrypt");
+const registrationValidator = require('../../config/validators/registrationValidation')
 
 const handleNewUser = async (req, res) => {
 	const { first_name, last_name, email, phone_number, password } = req.body;
 
-	const validationResult = dataValidation.schema.validate(req.body)
+	const validationResult = registrationValidator.schema.validate(req.body)
 
 	if (validationResult.error) {
 		console.error(validationResult.error.details);
@@ -33,7 +33,6 @@ const handleNewUser = async (req, res) => {
 			res.status(500).json({ 'message': err.message });
 		}
 	}
-
 }
 
 module.exports = { handleNewUser };

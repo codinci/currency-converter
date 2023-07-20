@@ -1,4 +1,4 @@
-const Joi = require('../../client/node_modules/joi/lib');
+const Joi = require('joi');
 
 const schema = Joi.object({
     password: Joi.string()

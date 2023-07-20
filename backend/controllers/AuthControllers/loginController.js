@@ -1,7 +1,7 @@
-const User = require("../models/User.js");
+const User = require("../../models/User.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const validator = require('../config/authValidation.js')
+const loginValidator = require('../../config/validators/loginValidation.js')
 
 
 const handleLogin = async (req, res) => {
@@ -9,7 +9,7 @@ const handleLogin = async (req, res) => {
 	console.log(email + ' and ' + password);
 
 	// validate request using joi library
-	const validationResult = validator.schema.validate(req.body)
+	const validationResult = loginValidator.schema.validate(req.body)
 	if (validationResult.error) {
 		console.error(validationResult.error.details[0].message);
 		return res.status(409).json({'message': validationResult.error.details[0].message})
