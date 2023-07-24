@@ -8,27 +8,28 @@
       <v-sheet v-if="isAuthenticated" class="ma-6 pa-2">
         <v-menu v-model="menu" :close-on-content-click="false" location="end">
           <template v-slot:activator="{ props }">
-			<v-btn v-bind="props" class="text-h6 hidden-sm-and-down">Profile</v-btn>
-			<v-icon class="ma-2 mb-4 hidden-md-and-up" icon="mdi-account-circle"></v-icon>
+            <v-btn v-bind="props" class="text-h6 hidden-sm-and-down">Profile</v-btn>
+            <v-icon class="ma-2 mb-4 hidden-md-and-up" icon="mdi-account-circle"></v-icon>
           </template>
           <v-card min-width="300">
             <v-list>
               <v-list-item class="mt-4">
-				<v-avatar>
-					<img src="../assets/user.png"  alt="User Avatar" />
-				</v-avatar>
-				<span class="ma-2 pa-2">{{store.user}}</span>
-				<v-list-item-subtitle class="mt-2 pa-2">Account Balance: </v-list-item-subtitle>
+                <v-avatar color="info">
+                  <v-icon icon="mdi-account-circle"></v-icon>
+                </v-avatar>
+                <span class="ma-2 pa-2">{{store.user}}</span>
+                <v-list-item-subtitle class="mt-2 pa-2">Account Balance: </v-list-item-subtitle>
               </v-list-item>
             </v-list>
+
             <v-divider></v-divider>
 
             <v-list>
               <v-list-item>
-				<router-link style="text-decoration: none; color: inherit;" to="/login" class="text-h6">
-					<span class="pa-2">Logout</span>
-					<v-icon class="ma-2 pa-2" icon="mdi-logout"></v-icon>
-				</router-link>
+                <router-link style="text-decoration: none; color: inherit;" to="/login" class="text-h6">
+                  <span class="pa-2">Logout</span>
+                  <v-icon class="ma-2 pa-2" icon="mdi-logout"></v-icon>
+                </router-link>
               </v-list-item>
             </v-list>
           </v-card>

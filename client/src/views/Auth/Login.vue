@@ -37,6 +37,7 @@ const { handleSubmit, resetForm } = useForm({
 
       return 'Password must contain alphanumeric characters greater than 8.'
     },
+    
     email (value) {
       if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
 

@@ -12,7 +12,12 @@ import router from './router'
 //pinia
 import { createPinia } from 'pinia'
 
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/vue-tel-input.css';
 
+const globalOptions = {
+  mode: 'auto',
+};
 
 const vuetify = createVuetify({
   components,
@@ -21,7 +26,7 @@ const vuetify = createVuetify({
 const pinia = createPinia()
 const app = createApp(App)
 
-
+app.use(VueTelInput, globalOptions)
 app.use(pinia)
 app.use(vuetify)
 app.use(router)
