@@ -23,7 +23,8 @@ const schema = Joi.object({
       Joi.number()
     ],
     phone_number: Joi.number(),
-
+    country_name: Joi.string(),
+    country_code: Joi.string(),
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
       .required()

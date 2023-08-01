@@ -1,7 +1,7 @@
 <template>
   <v-container class="d-flex ma-auto">
 	<v-card class="ma-auto mt-16 pa-2 w-75">
-    <h3 class="text-h4 text-center ma-2 pa-2">Create Account</h3>
+    <h3 class="text-h5 text-center ma-2 pa-2">Create Account</h3>
 	  <v-form @submit.prevent>
       <v-container>
         <v-row>
@@ -22,27 +22,31 @@
         </v-row>
 
         <v-row>
-            <v-col cols="12" md="6">
-              <vue-tel-input
-                v-model="phone"
-                :dropdownOptions="{showDialCodeInList: true, showFlags: true, showSearchBox: true}"
-                @validate="numberValidation">
-              </vue-tel-input>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="email.value.value"
-                :error-messages="email.errorMessage.value"
-                label="E-mail"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          <v-col cols="12" md="6">
+            <vue-tel-input
+            class="pa-2"
+              v-model="phoneNumber"
+              :dropdownOptions="{showDialCodeInList: true, showFlags: true, showSearchBox: true}"
+              @validate="phoneNumberValidation">
+            </vue-tel-input>
+            <span v-if="!isPhoneNumberValid"  class="ma-2 pa-2 text-error text-subtitle-2">{{phoneNumberErrorMessage}}</span>
 
-
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="email.value.value"
+              :error-messages="email.errorMessage.value"
+              label="E-mail"
+            ></v-text-field>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12" md="6">
               <v-text-field
                 v-model="password.value.value"
+                :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                @click:append-inner="() => (showPassword = !showPassword)"
+                :type="showPassword ? 'text' : 'password'"
                 :error-messages="password.errorMessage.value"
                 label="Password"
               ></v-text-field>
@@ -50,6 +54,9 @@
           <v-col cols="12" md="6">
             <v-text-field
               v-model="confirmPwd.value.value"
+              :append-inner-icon="showConfirmPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              @click:append-inner="() => (showConfirmPassword = !showConfirmPassword)"
+              :type="showConfirmPassword ? 'text' : 'password'"
               :error-messages="confirmPwd.errorMessage.value"
               label="Confirm Password"
             ></v-text-field>
@@ -59,7 +66,7 @@
       </v-container>
 	  </v-form>
 	  <v-row class="justify-center ma-4">
-		<p>Already have an account? <router-link to="/login">Login</router-link></p>
+		  <p class="font-weight-medium">Already have an account? <router-link class="font-weight-bold" to="/login">Login</router-link></p>
 	  </v-row>
 	</v-card>
   </v-container>
@@ -68,18 +75,20 @@
 
   import { useField, useForm } from 'vee-validate'
   import { ref } from 'vue';
+  import { signup } from '../../api/authApi'
 
-  const { handleSubmit, handleReset } = useForm({
+
+  const { handleSubmit, resetForm } = useForm({
     validationSchema: {
       fName(value) {
-        if (/^[a-z]{3}$/i.test(value)) return true
+        if (value && value.length >= 2 && /^[ a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ'`'\-]+$/.test(value)) return true
 
-        return 'First Name must contain letters greater than 3'
+        return 'First Name must contain at least 2 letters'
       },
       lName(value) {
-        if (/^[a-z]{3}$/i.test(value)) return true
+        if (value && value.length >= 2 && /^[ a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ'`'\-]+$/.test(value)) return true
 
-        return 'Last Name must contain letters greater than 3'
+        return 'Last Name must contain at least 2 letters'
       },
       password (value) {
         if (/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)) return true
@@ -91,12 +100,11 @@
 
         return 'Must match with password'
       },
-
       email (value) {
         if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
 
         return 'Must be a valid e-mail.'
-      }
+      },
     },
   })
 
@@ -105,17 +113,59 @@
   const fName = useField('fName')
   const lName = useField('lName')
   const confirmPwd = useField('confirmPwd')
+  const phoneNumber = ref('')
+  const phoneNumberErrorMessage = ref('')
+  const isPhoneNumberValid = ref(false)
+  const showPassword = ref(false)
+  const showConfirmPassword = ref(false)
+  const countryCode = ref('')
+  const userCountry = ref('')
+  const userContact = ref('')
 
-  const phone = ref('')
-
-  const numberValidation = ({country, formatted, valid}) => {
-
-    console.log(`Phone No: ${formatted}, Validation: ${valid}, Country: ${country.name}`);
+  //validating phone number
+  const phoneNumberValidation = ({ countryCallingCode, number, valid, country }) => {
+    countryCode.value = countryCallingCode
+    userContact.value = number
+    isPhoneNumberValid.value = valid
+    userCountry.value= country.name
+    console.log(`Country Code: ${countryCallingCode}, Phone No: ${number}, Validation: ${valid}, Country: ${country.name}`);
   }
 
+  //handling form submission
+  const submit = handleSubmit(async values => {
+    if (!isPhoneNumberValid.value) {
+      phoneNumberErrorMessage.value = 'Invalid phone number'
+      return
+    }
 
-  const submit = handleSubmit(values => {
-    alert(JSON.stringify(values, null, 2))
+    phoneNumberErrorMessage.value = ''
+    const userDetails = {
+      first_name: values.fName,
+      last_name: values.lName,
+      email: values.email,
+      password: values.password,
+      phone_number: userContact.value,
+      country_code: countryCode.value,
+      country_name: userCountry.value
+    }
+
+    const res = await signup(userDetails)
+
+    if (res?.code) {
+      //Show error message
+      if (res?.response) {
+        displayNotification.value.showSnackbar(res.response.data.message, 'error')
+      }
+      else {
+        displayNotification.value.showSnackbar(`${res.message} - server is unreachable`, 'error')
+      }
+    } else {
+      // Show success message
+      displayNotification.value.showSnackbar('Please verify your email', 'success');
+      router.push({ name: 'profile' });
+    }
+    //resetting form
+    resetForm()
   })
 
 </script>

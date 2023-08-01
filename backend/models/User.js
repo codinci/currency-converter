@@ -25,11 +25,21 @@ const UserSchema = new Schema({
 		type: mongoose.Types.Decimal128,
 		default: 0.00,
 	},
+	validated: Boolean,
 	refreshToken: String,
 	country: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Country',
 		unique: true
+	}
+})
+
+UserSchema.set('toJSON', {
+	transform: (document, returnedObject) => {
+		returnedObject.id = returnedObject._id.toString()
+		delete returnedObject._id
+		// the password should not be revealed
+		delete returnedObject.password
 	},
 })
 

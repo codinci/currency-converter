@@ -8,7 +8,7 @@ const axiosApi = axios.create({
 	withCredentials: true,
 })
 
-
+//login function
 export const login = async (credentials) => {
 	const authStore = useAuthStore()
 	try {
@@ -17,23 +17,23 @@ export const login = async (credentials) => {
 		authStore.setUser(response.data.user)
 		return response;
 	} catch (error) {
-		console.error(error.message);
-		return error.response;
+		return error;
 	}
 }
 
+//registration function
 export const register = async (credentials) => {
-
 	try {
-		const { data } = await axiosApi.post('/register', credentials)
-		console.log(data);
-		return data
+		const response = await axiosApi.post('/register', credentials)
+		console.log(response);
+		return response
 	} catch (error) {
 		console.error(error.message);
-		throw error.message;
+		throw error;
 	}
 }
 
+//logout function
 export const logout = async () => {
 	const authStore = useAuthStore()
 
