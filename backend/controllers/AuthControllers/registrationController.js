@@ -1,7 +1,11 @@
 const User = require("../../models/User.js");
 const Country = require("../../models/Country.js")
+const UserVerification = require("../../models/UserVerify")
 const bcrypt = require("bcrypt");
+const crypto = require('crypto')
 const registrationValidator = require('../../config/validators/registrationValidation')
+const sendEmail = require('../../utils/sendMail')
+
 
 const handleNewUser = async (req, res) => {
 	const { first_name, last_name, email, phone_number, password, country_code, country_name } = req.body;
@@ -27,16 +31,29 @@ const handleNewUser = async (req, res) => {
 				'lastName': last_name,
 				'email': email,
 				'phoneNumber': phone_number,
-				'password': hashedPwd
-			});
+				'password': hashedPwd,
+			})
 			res.status(201).json({ 'message': `New user successfully created` });
 
 			//saving country details to country db
-			const userCountry = await Country.create({
+			await Country.create({
 				name: country_name,
 				code: country_code,
 				user: newUser._id
 			})
+
+			//creating verification token
+			const verificationToken = await UserVerification.create({
+				user: newUser._id,
+				verificationToken: crypto.randomBytes(32).toString("hex"),
+				createdAt: Date.now(),
+				expiresAt: Date.now() + 86400
+			})
+
+			const message = `Please verify your email address before 24hrs. Click the link to verify:${process.env.BASE_URL}/user/verify/${newUser._id}/${verificationToken.verificationToken}`;
+    		await sendEmail.sendMail(newUser.email, "Verify Email", message);
+
+
 		} catch (err) {
 			console.error(err);
 			res.status(500).json({ 'message': err.message });

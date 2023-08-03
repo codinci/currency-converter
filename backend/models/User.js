@@ -25,12 +25,14 @@ const UserSchema = new Schema({
 		type: mongoose.Types.Decimal128,
 		default: 0.00,
 	},
-	validated: Boolean,
+	verified: {
+		type: Boolean,
+		default: false
+	},
 	refreshToken: String,
 	country: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Country',
-		unique: true
 	}
 })
 
