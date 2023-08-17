@@ -5,7 +5,6 @@ const handleVerification = async (req, res) => {
 	const { id, token } = req.params
 
 	try {
-		console.log(id)
 		const user = await User.findById(id);
 		if (!user) return res.status(400).json({ 'message': 'Invalid link- user not available' })
 		if (user.verified) {

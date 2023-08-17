@@ -2,49 +2,56 @@
   <v-container class="d-flex ma-auto">
   <Notification ref="displayNotification"/>
 	<v-card class="w-50 mx-auto">
-    <h3 class="text-h5 text-center ma-2 pa-2">Login</h3>
+    <h3 class="text-h5 text-center ma-2 pa-2">Reset Password</h3>
 	  <v-form @submit.prevent class="ma-auto w-75 my-8">
 		<v-text-field
-
 			v-model="email.value.value"
 			:error-messages="email.errorMessage.value"
 			label="E-mail"
 		></v-text-field>
-    <v-text-field
-      v-model="password.value.value"
-      :append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
-      @click:append-inner="() => (showPassword = !showPassword)"
-      :type="showPassword ? 'text' : 'password'"
-      :error-messages="password.errorMessage.value"
-      label="Password"
-    ></v-text-field>
-		<v-btn type="submit" @click="submit" block class="mt-2">Login</v-btn>
+		<v-text-field
+			v-model="password.value.value"
+			:append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
+			@click:append-inner="() => (showPassword = !showPassword)"
+			:type="showPassword ? 'text' : 'password'"
+			:error-messages="password.errorMessage.value"
+			label="New Password"
+		></v-text-field>
+		<v-text-field
+			v-model="confirmPassword.value.value"
+			:append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
+			@click:append-inner="() => (showPassword = !showPassword)"
+			:type="showPassword ? 'text' : 'password'"
+			:error-messages="confirmPassword.errorMessage.value"
+			label="Confirm New Password"
+		></v-text-field>
+		<v-btn type="submit" @click="submit" block class="mt-2">Reset Password</v-btn>
 	  </v-form>
-	  <v-row class="ma-auto w-75">
-      <v-col>
-        <router-link style="text-decoration: none" to="/reset/password" class="font-weight-medium text-info">Forgot Password?</router-link>
-      </v-col>
-       <v-col>
-        	<p class="font-weight-medium">Don't have an account? <router-link style="text-decoration: none;" class="text-info" to="/signup">Sign Up</router-link></p>       </v-col>
-	  </v-row>
 	</v-card>
   </v-container>
 </template>
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {login} from '../../api/authApi'
+import {reset} from '../../api/authApi'
 import { useField, useForm } from 'vee-validate'
 import Notification from '../../components/Notification.vue'
 
 const displayNotification = ref(null)
 
 const { handleSubmit, resetForm } = useForm({
-  validationSchema: {
+	validationSchema: {
+
     password (value) {
       if ( /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)) return true
 
       return 'Password must contain alphanumeric characters greater than 8.'
+	},
+
+	confirmPassword (value) {
+		if (value &&  value === password.value.value) return true
+
+		return 'Must match with password'
     },
 
     email (value) {
@@ -55,16 +62,17 @@ const { handleSubmit, resetForm } = useForm({
   },
 })
 const password = useField('password')
+const confirmPassword = useField('confirmPassword')
 const email = useField('email')
 const showPassword = ref(false)
 
 const router = useRouter()
 
 const submit = handleSubmit(async values => {
-  const res = await login(
+  const res = await reset(
     {
       email: values.email,
-      password: values.password
+      newPassword: values.password
     }
   )
 
@@ -78,8 +86,8 @@ const submit = handleSubmit(async values => {
     }
   } else {
     // Show success message
-    displayNotification.value.showSnackbar('Login Successful', 'success');
-    router.push({ name: 'profile' });
+    displayNotification.value.showSnackbar(res.response.data.message, 'success');
+    router.push({ name: 'login' });
   }
   resetForm()
 })

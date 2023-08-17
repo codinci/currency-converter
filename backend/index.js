@@ -38,6 +38,7 @@ app.use("/login", require("./routes/AuthRoutes/login"));
 app.use("/refresh", require("./routes/AuthRoutes/refresh"));
 app.use("/logout", require("./routes/AuthRoutes/logout"));
 app.use("/user", require("./routes/AuthRoutes/verify"));
+app.use("/reset", require("./routes/AuthRoutes/reset"));
 app.use('/test', require('./routes/test'));
 
 app.use(verifyJWT);

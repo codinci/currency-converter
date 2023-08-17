@@ -10,18 +10,21 @@ const handleLogin = async (req, res) => {
 	// validate request using joi library
 	const validationResult = loginValidator.schema.validate(req.body)
 	if (validationResult.error) {
-		console.error(validationResult.error.details[0].message);
 		return res.status(409).json({'message': validationResult.error.details[0].message})
 	} else {
-		//ensure user exists
 		const foundUser = await User.findOne({ email: email }).exec();
-		const userName = `${foundUser.firstName} ${foundUser.lastName}`
 
-		if (!foundUser)
-		{ return res.status(401).json({ message: "Email does not exist" }) }
-		else {
+		//ensure user exists
+		if (!foundUser) {
+			return res.status(401).json({ message: "Email does not exist" })
+		}
+		//check if user is verified
+		else if (foundUser.verified) {
+			const userName = `${foundUser.firstName} ${foundUser.lastName}`
 			//compare password in the db to one in the request
 			const matchPwd = await bcrypt.compare(password, foundUser.password);
+
+			//generate accessToken
 			if (matchPwd) {
 				const accessToken = jwt.sign(
 					{
@@ -34,6 +37,7 @@ const handleLogin = async (req, res) => {
 					{ expiresIn: "10s" }
 				);
 
+				//generate a refresh token
 				const refreshToken = jwt.sign(
 					{
 						username: userName,
@@ -44,7 +48,7 @@ const handleLogin = async (req, res) => {
 				);
 
 				foundUser.refreshToken = refreshToken;
-				const result = await foundUser.save();
+				await foundUser.save();
 
 				res.cookie("jwt", refreshToken, {
 					httpOnly: true,
@@ -53,10 +57,13 @@ const handleLogin = async (req, res) => {
 					maxAge: 24 * 60 * 60 * 1000,
 				});// set secure to true in production
 
-				res.json({userName, accessToken})
+				res.status(200).json({userName, accessToken})
 			} else {
 				res.status(401).json({ message: "Incorrect password" });
 			}
+		}
+		else {
+			res.status(401).json({ message: "Please verify your email address" });
 		}
 	}
 };

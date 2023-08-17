@@ -25,7 +25,6 @@ export const login = async (credentials) => {
 export const register = async (credentials) => {
 	try {
 		const response = await axiosApi.post('/register', credentials)
-		console.log(response);
 		return response
 	} catch (error) {
 		console.error(error.message);
@@ -39,6 +38,16 @@ export const verify = async (credentials) => {
 
 	try {
 		const response = await axiosApi.get(`/user/verify/${userId}/${userToken}`)
+		return response
+	} catch (error) {
+		return error
+	}
+}
+
+//reset password function
+export const reset = async (credentials) => {
+	try {
+		const response = await axiosApi.post('/reset/password', credentials)
 		return response
 	} catch (error) {
 		return error
