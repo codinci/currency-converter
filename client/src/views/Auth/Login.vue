@@ -12,7 +12,7 @@
 		></v-text-field>
     <v-text-field
       v-model="password.value.value"
-      :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+      :append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
       @click:append-inner="() => (showPassword = !showPassword)"
       :type="showPassword ? 'text' : 'password'"
       :error-messages="password.errorMessage.value"
@@ -21,7 +21,7 @@
 		<v-btn type="submit" @click="submit" block class="mt-2">Login</v-btn>
 	  </v-form>
 	  <v-row class="justify-center ma-4">
-		  <p class="font-weight-medium">Don't have an account? <router-link class="font-weight-bold" to="/signup">Sign Up</router-link></p>
+		  <p class="font-weight-medium">Don't have an account? <router-link style="text-decoration: none;" class="font-weight-bold" to="/signup">Sign Up</router-link></p>
 	  </v-row>
 	</v-card>
   </v-container>

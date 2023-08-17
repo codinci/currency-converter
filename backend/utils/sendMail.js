@@ -16,7 +16,7 @@ const sendMail = async (email, subject, text) => {
 			from: `"Currency Converter" ${process.env.USER}`,
 			to: email,
 			subject: subject,
-			text: text
+			html: text
 		})
 
 		console.log("Email sent successsfully");

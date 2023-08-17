@@ -47,10 +47,17 @@ const handleNewUser = async (req, res) => {
 				user: newUser._id,
 				verificationToken: crypto.randomBytes(32).toString("hex"),
 				createdAt: Date.now(),
-				expiresAt: Date.now() + 86400
+				expiresAt: Date.now() + 86400000
 			})
 
-			const message = `Please verify your email address before 24hrs. Click the link to verify:${process.env.BASE_URL}/user/verify/${newUser._id}/${verificationToken.verificationToken}`;
+			console.log(verificationToken)
+			const verificationLink = `${process.env.BASE_URL}/user/verify/${newUser._id}/${verificationToken.verificationToken}`
+			const message = `
+				<p>Please verify your email address before 24hrs</p>.
+				<p>Verify
+					<a href="${verificationLink}">here</a>
+				</p>`;
+
     		await sendEmail.sendMail(newUser.email, "Verify Email", message);
 
 

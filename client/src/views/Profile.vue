@@ -1,4 +1,5 @@
 <template>
+  <SiteNavigation/>
   <v-container class="my-16">
     <v-card :width="width" class="ma-4 pa-2">
       <v-tabs v-model="tab">
@@ -6,7 +7,6 @@
           {{ item.tab }}
         </v-tab>
       </v-tabs>
-
       <v-card-text>
         <v-window v-model="tab">
           <v-window-item v-for="item in items" :key="item.tab" class="ma-2 pa-2">
@@ -23,7 +23,7 @@ import { computed, ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import ProfileInfo from '../components/ProfileInfo.vue';
 import Transactions from '../components/Transactions.vue';
-
+import SiteNavigation from '../components/SiteNavigation.vue';
 
 const tab = ref('Personal Details');
 

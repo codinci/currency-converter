@@ -31,11 +31,14 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
+
 // route handlers
 app.use("/register", require("./routes/AuthRoutes/register"));
 app.use("/login", require("./routes/AuthRoutes/login"));
 app.use("/refresh", require("./routes/AuthRoutes/refresh"));
 app.use("/logout", require("./routes/AuthRoutes/logout"));
+app.use("/user", require("./routes/AuthRoutes/verify"));
+app.use('/test', require('./routes/test'));
 
 app.use(verifyJWT);
 

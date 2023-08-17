@@ -12,9 +12,9 @@ const axiosApi = axios.create({
 export const login = async (credentials) => {
 	const authStore = useAuthStore()
 	try {
-		const response = await axiosApi.post('/login',credentials)
+		const response = await axiosApi.post('/login', credentials)
 		authStore.setUserToken(response.data.accessToken)
-		authStore.setUser(response.data.user)
+		authStore.setUser(response.data.userName)
 		return response;
 	} catch (error) {
 		return error;
@@ -30,6 +30,18 @@ export const register = async (credentials) => {
 	} catch (error) {
 		console.error(error.message);
 		throw error;
+	}
+}
+
+//verification function
+export const verify = async (credentials) => {
+	const { userId, userToken } = credentials
+
+	try {
+		const response = await axiosApi.get(`/user/verify/${userId}/${userToken}`)
+		return response
+	} catch (error) {
+		return error
 	}
 }
 

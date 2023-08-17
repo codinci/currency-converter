@@ -6,6 +6,7 @@ const loginValidator = require('../../config/validators/loginValidation.js')
 
 const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
+
 	// validate request using joi library
 	const validationResult = loginValidator.schema.validate(req.body)
 	if (validationResult.error) {
@@ -48,7 +49,7 @@ const handleLogin = async (req, res) => {
 				res.cookie("jwt", refreshToken, {
 					httpOnly: true,
 					sameSite: "None",
-					secure: false,
+					secure: true,
 					maxAge: 24 * 60 * 60 * 1000,
 				});// set secure to true in production
 

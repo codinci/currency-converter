@@ -1,5 +1,6 @@
 <template>
   <v-container class="d-flex ma-auto">
+  <Notification ref="displayNotification"/>
 	<v-card class="ma-auto mt-16 pa-2 w-75">
     <h3 class="text-h5 text-center ma-2 pa-2">Create Account</h3>
 	  <v-form @submit.prevent>
@@ -44,7 +45,7 @@
           <v-col cols="12" md="6">
               <v-text-field
                 v-model="password.value.value"
-                :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                :append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
                 @click:append-inner="() => (showPassword = !showPassword)"
                 :type="showPassword ? 'text' : 'password'"
                 :error-messages="password.errorMessage.value"
@@ -54,7 +55,7 @@
           <v-col cols="12" md="6">
             <v-text-field
               v-model="confirmPwd.value.value"
-              :append-inner-icon="showConfirmPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              :append-inner-icon="showConfirmPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
               @click:append-inner="() => (showConfirmPassword = !showConfirmPassword)"
               :type="showConfirmPassword ? 'text' : 'password'"
               :error-messages="confirmPwd.errorMessage.value"
@@ -66,17 +67,22 @@
       </v-container>
 	  </v-form>
 	  <v-row class="justify-center ma-4">
-		  <p class="font-weight-medium">Already have an account? <router-link class="font-weight-bold" to="/login">Login</router-link></p>
+		  <p class="font-weight-medium">Already have an account? <router-link style="text-decoration: none;" class="font-weight-bold" to="/login">Login</router-link></p>
 	  </v-row>
 	</v-card>
+
+
   </v-container>
 </template>
 <script setup>
 
   import { useField, useForm } from 'vee-validate'
   import { ref } from 'vue';
-  import { signup } from '../../api/authApi'
+  import { register } from '../../api/authApi'
+  import Notification from '../../components/Notification.vue'
+  import { useRouter } from 'vue-router'
 
+  const displayNotification = ref(null)
 
   const { handleSubmit, resetForm } = useForm({
     validationSchema: {
@@ -122,21 +128,24 @@
   const userCountry = ref('')
   const userContact = ref('')
 
+  const router = useRouter()
+
   //validating phone number
   const phoneNumberValidation = ({ countryCallingCode, number, valid, country }) => {
     countryCode.value = countryCallingCode
     userContact.value = number
     isPhoneNumberValid.value = valid
     userCountry.value= country.name
-    console.log(`Country Code: ${countryCallingCode}, Phone No: ${number}, Validation: ${valid}, Country: ${country.name}`);
   }
 
   //handling form submission
   const submit = handleSubmit(async values => {
+
     if (!isPhoneNumberValid.value) {
       phoneNumberErrorMessage.value = 'Invalid phone number'
       return
     }
+
 
     phoneNumberErrorMessage.value = ''
     const userDetails = {
@@ -149,7 +158,7 @@
       country_name: userCountry.value
     }
 
-    const res = await signup(userDetails)
+    const res = await register(userDetails)
 
     if (res?.code) {
       //Show error message
@@ -162,11 +171,13 @@
     } else {
       // Show success message
       displayNotification.value.showSnackbar('Please verify your email', 'success');
-      router.push({ name: 'profile' });
+      router.push({ name: 'verificationAlert' });
     }
     //resetting form
     resetForm()
   })
+
+
 
 </script>
 

@@ -14,10 +14,12 @@
           <v-card min-width="300">
             <v-list>
               <v-list-item class="mt-4">
-                <v-avatar color="info">
-                  <v-icon icon="mdi-account-circle"></v-icon>
-                </v-avatar>
-                <span class="ma-2 pa-2">{{store.user}}</span>
+                <router-link style="text-decoration: none; color: inherit;" to="/profile">
+                  <v-avatar color="info">
+                    <v-icon icon="mdi-account-circle"></v-icon>
+                  </v-avatar>
+                  <span class="ma-2 pa-2">{{store.user}}</span>
+                </router-link>
                 <v-list-item-subtitle class="mt-2 pa-2">Account Balance: </v-list-item-subtitle>
               </v-list-item>
             </v-list>
@@ -36,11 +38,11 @@
         </v-menu>
       </v-sheet>
       <v-sheet v-else class="ma-6 pa-2">
-		<router-link style="text-decoration: none; color: inherit;" to="/login" class="text-h6 hidden-sm-and-down">Login</router-link>
-		<router-link style="text-decoration: none; color: inherit;" to="/login" class="hidden-md-and-up">
+        <router-link style="text-decoration: none; color: inherit;" to="/login" class="text-h6 hidden-sm-and-down">Login</router-link>
+        <router-link style="text-decoration: none; color: inherit;" to="/login" class="hidden-md-and-up">
           <v-icon class="ma-2 pa-2 mb-4" icon="mdi-login"></v-icon>
         </router-link>
-	</v-sheet>
+      </v-sheet>
     </v-app-bar>
   </v-container>
 </template>
