@@ -176,9 +176,6 @@
     //resetting form
     resetForm()
   })
-
-
-
 </script>
 
 

@@ -19,9 +19,9 @@
 		></v-text-field>
 		<v-text-field
 			v-model="confirmPassword.value.value"
-			:append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
-			@click:append-inner="() => (showPassword = !showPassword)"
-			:type="showPassword ? 'text' : 'password'"
+			:append-inner-icon="showConfirmPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
+			@click:append-inner="() => (showConfirmPassword = !showConfirmPassword)"
+			:type="showConfirmPassword ? 'text' : 'password'"
 			:error-messages="confirmPassword.errorMessage.value"
 			label="Confirm New Password"
 		></v-text-field>
@@ -65,6 +65,7 @@ const password = useField('password')
 const confirmPassword = useField('confirmPassword')
 const email = useField('email')
 const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 const router = useRouter()
 
@@ -85,8 +86,8 @@ const submit = handleSubmit(async values => {
       displayNotification.value.showSnackbar(`${res.message} - server is unreachable`, 'error')
     }
   } else {
-    // Show success message
-    displayNotification.value.showSnackbar(res.response.data.message, 'success');
+	  // Show success message
+    displayNotification.value.showSnackbar(res.data.message, 'success');
     router.push({ name: 'login' });
   }
   resetForm()

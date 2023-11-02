@@ -25,17 +25,16 @@ import { ref, onMounted } from 'vue';
 import { verify } from '../../api/authApi';
 
 const route = useRoute()
+
 const verificationDetails = {
 	userId: route.params.id,
 	userToken: route.params.token
-
 }
 
 const message = ref('')
 const isVerified = ref(false)
 
 
-//TODO: Why must one reload page for verification to work
 
 onMounted(async () => {
 	const res = await verify(verificationDetails)

@@ -16,7 +16,7 @@ const handleNewUser = async (req, res) => {
 
 	if (validationResult.error) {
 		console.error(validationResult.error.details);
-		return res.status(409).json({'message': validationResult.error.details[0].message })
+		return res.status(400).json({'message': validationResult.error.details[0].message })
 	} else {
 		//check for duplicate users in db
 		const duplicateUser = await User.findOne({ email: email }).exec();
@@ -50,7 +50,6 @@ const handleNewUser = async (req, res) => {
 				expiresAt: Date.now() + 86400000
 			})
 
-			console.log(verificationToken)
 			const verificationLink = `${process.env.BASE_URL}/user/verify/${newUser._id}/${verificationToken.verificationToken}`
 			const message = `
 				<p>Please verify your email address before 24hrs</p>.

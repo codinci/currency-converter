@@ -20,7 +20,7 @@ const handleVerification = async (req, res) => {
 			await User.deleteOne({ _id: id })
 			await UserVerification.deleteOne({_id: verificationToken._id})
 
-			return res.status(400).json({ 'message': 'Link has expired' })
+			return res.status(401).json({ 'message': 'Link has expired' })
 		}
 
 		await User.findByIdAndUpdate(user._id, { verified: true })

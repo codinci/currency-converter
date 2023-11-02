@@ -8,9 +8,13 @@ const handleReset = async (req, res) => {
 		const foundUser = await User.findOne({ email: email }).exec();
 
 		if (!foundUser) {
-			res.status(401).json({message: 'No user with such email exists'})
+			res.status(400).json({message: 'No user with such email exists'})
 		}
 
+		//compare old password to new password
+		const matchPwd = await bcrypt.compare(newPassword, foundUser.password);
+
+		if(matchPwd) return res.status(409).json({message: 'New Password cannot be the same as the old password'})
 		//encrypt the new password
 		const newHashedPassword = await bcrypt.hash(newPassword, 10);
 

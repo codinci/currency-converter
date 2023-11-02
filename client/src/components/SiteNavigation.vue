@@ -2,21 +2,21 @@
   <v-container class="pa-0">
     <v-app-bar class="d-flex">
       <v-sheet class="ma-4 pa-2 me-auto">
-        <v-icon class="ma-2 pa-2 mb-4" icon="mdi-cash-multiple"></v-icon>
+        <v-icon class="ma-2 pa-2 mb-4" role="img" icon="mdi-cash-multiple"></v-icon>
         <router-link style="text-decoration: none; color: inherit;" to="/" class="text-subtitle-1 text-sm-h6 text-md-h5">Currency Converter</router-link>
       </v-sheet>
       <v-sheet v-if="isAuthenticated" class="ma-6 pa-2">
         <v-menu v-model="menu" :close-on-content-click="false" location="end">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" class="text-h6 hidden-sm-and-down">Profile</v-btn>
-            <v-icon class="ma-2 mb-4 hidden-md-and-up" icon="mdi-account-circle"></v-icon>
+            <v-icon class="ma-2 mb-4 hidden-md-and-up" role="img" icon="mdi-account-circle"></v-icon>
           </template>
           <v-card min-width="300">
             <v-list>
               <v-list-item class="mt-4">
                 <router-link style="text-decoration: none; color: inherit;" to="/profile">
                   <v-avatar color="info">
-                    <v-icon icon="mdi-account-circle"></v-icon>
+                    <v-icon role="img" icon="mdi-account-circle"></v-icon>
                   </v-avatar>
                   <span class="ma-2 pa-2">{{store.user}}</span>
                 </router-link>

@@ -4,28 +4,34 @@
 	<v-card class="w-50 mx-auto">
     <h3 class="text-h5 text-center ma-2 pa-2">Login</h3>
 	  <v-form @submit.prevent class="ma-auto w-75 my-8">
-		<v-text-field
+      <v-text-field
 
-			v-model="email.value.value"
-			:error-messages="email.errorMessage.value"
-			label="E-mail"
-		></v-text-field>
-    <v-text-field
-      v-model="password.value.value"
-      :append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
-      @click:append-inner="() => (showPassword = !showPassword)"
-      :type="showPassword ? 'text' : 'password'"
-      :error-messages="password.errorMessage.value"
-      label="Password"
-    ></v-text-field>
-		<v-btn type="submit" @click="submit" block class="mt-2">Login</v-btn>
+        v-model="email.value.value"
+        :error-messages="email.errorMessage.value"
+        label="E-mail"
+      ></v-text-field>
+      <v-text-field
+        v-model="password.value.value"
+        :append-inner-icon="showPassword ? 'mdi-eye-outline': 'mdi-eye-off-outline'"
+        @click:append-inner="() => (showPassword = !showPassword)"
+        :type="showPassword ? 'text' : 'password'"
+        :error-messages="password.errorMessage.value"
+        label="Password"
+      ></v-text-field>
+      <v-btn type="submit" @click="submit" block class="mt-2">Login</v-btn>
 	  </v-form>
 	  <v-row class="ma-auto w-75">
       <v-col>
         <router-link style="text-decoration: none" to="/reset/password" class="font-weight-medium text-info">Forgot Password?</router-link>
       </v-col>
-       <v-col>
-        	<p class="font-weight-medium">Don't have an account? <router-link style="text-decoration: none;" class="text-info" to="/signup">Sign Up</router-link></p>       </v-col>
+      <v-col>
+        	<p
+            class="font-weight-medium">Don't have an account?
+            <router-link style="text-decoration: none;" class="text-info" to="/signup">
+              Sign Up
+            </router-link>
+          </p>
+      </v-col>
 	  </v-row>
 	</v-card>
   </v-container>

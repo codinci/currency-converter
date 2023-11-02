@@ -6,6 +6,7 @@ import Signup from '../views/Auth/Signup.vue';
 import UserVerification from '../views/Auth/VerificationActivation.vue';
 import VerificationAlert from '../views/Auth/VerificationAlert.vue';
 import ResetPassword from '../views/Auth/ForgotPassword.vue';
+import UpdateForms from '../components/UpdateForms.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -65,6 +66,11 @@ const router = createRouter({
 			meta: {
 				title: 'Reset Password'
 			}
+		},
+		{
+			path: '/update',
+			name: 'updateInfo',
+			component: UpdateForms,
 		}
 	]
 })

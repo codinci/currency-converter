@@ -10,13 +10,13 @@ const handleLogin = async (req, res) => {
 	// validate request using joi library
 	const validationResult = loginValidator.schema.validate(req.body)
 	if (validationResult.error) {
-		return res.status(409).json({'message': validationResult.error.details[0].message})
+		return res.status(400).json({'message': validationResult.error.details[0].message})
 	} else {
 		const foundUser = await User.findOne({ email: email }).exec();
 
 		//ensure user exists
 		if (!foundUser) {
-			return res.status(401).json({ message: "Email does not exist" })
+			return res.status(400).json({ message: "Email does not exist" })
 		}
 		//check if user is verified
 		else if (foundUser.verified) {
