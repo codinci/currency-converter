@@ -1,7 +1,11 @@
 <template>
 	<SiteNavigation/>
 	<v-container class="ma-auto">
-		<Converter/>
+		<Suspense>
+			<Converter/>
+			<template #fallback>Loading ...</template>
+		</Suspense>
+
 	</v-container>
 </template>
 <script setup>

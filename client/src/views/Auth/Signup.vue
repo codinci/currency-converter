@@ -67,7 +67,12 @@
       </v-container>
 	  </v-form>
 	  <v-row class="justify-center ma-4">
-		  <p class="font-weight-medium">Already have an account? <router-link style="text-decoration: none;" class="font-weight-bold" to="/login">Login</router-link></p>
+		  <p class="font-weight-medium">
+        Already have an account?
+        <router-link style="text-decoration: none;" class="font-weight-bold text-info" to="/login">
+          Login
+        </router-link>
+      </p>
 	  </v-row>
 	</v-card>
 

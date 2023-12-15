@@ -36,7 +36,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="5" md="2">
-          <v-icon icon="mdi-check"></v-icon>
+          <v-icon class="text-success" icon="mdi-check"></v-icon>
         </v-col>
        </v-row>
        <v-row>
@@ -48,7 +48,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="5" md="2">
-          <v-icon icon="mdi-check"></v-icon>
+          <v-icon class="text-success" icon="mdi-check"></v-icon>
         </v-col>
        </v-row>
        <v-row class="justify-center mt-4">
